@@ -12,10 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16.x
+
       - name: Install dependencies
         run: npm install
 
       - name: Build and test
-        env:
-          NODE_OPTIONS: '--openssl-legacy-provider'
         run: npm run all
