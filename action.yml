@@ -1,11 +1,24 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'deepset Cloud file uploader'
+description: 'Upload file and metadata to deepset Cloud using GitHub Actions.'
+author: 'Silvano Cerza'
 inputs:
-  milliseconds: # change this
+  workspace-name:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'deepset Cloud Workspace name'
+  api-key:
+    required: true
+    description: 'A valid deepset Cloud API Key'
+  file:
+    required: true
+    description: 'File uploaded to deepset Cloud'
+  meta:
+    required: false
+    description: 'A dictionary of file metadata'
+    default: '{}'
+  write-mode:
+    required: false
+    description: 'How to handle file upload in case a file with the same name already exists. Possible options are: KEEP, OVERWRITE, FAIL. Defaults to FAIL.'
+    default: 'FAIL'
 runs:
   using: 'node16'
   main: 'dist/index.js'
