@@ -1,6 +1,6 @@
 {
   "name": "deepset-cloud-file-uploader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Upload file and metadata to deepset Cloud using GitHub Actions.",
   "main": "lib/main.js",
