@@ -4,7 +4,7 @@ import {
   validateFile,
   validateWriteMode
 } from './validators'
-import {upload} from './upload'
+import {uploadFile} from './upload'
 
 async function run(): Promise<void> {
   try {
@@ -17,7 +17,15 @@ async function run(): Promise<void> {
     const writeMode = core.getInput('write-mode')
     validateWriteMode(writeMode)
 
-    await upload(apiKey, workspaceName, file, metadata, writeMode)
+    const file_id = await uploadFile(
+      apiKey,
+      workspaceName,
+      file,
+      metadata,
+      writeMode
+    )
+
+    core.info(`Uploaded file ID: ${file_id}`)
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message)
