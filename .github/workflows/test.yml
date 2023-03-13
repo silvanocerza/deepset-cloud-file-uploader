@@ -20,4 +20,7 @@ jobs:
         run: npm install
 
       - name: Build and test
+        env:
+          DEEPSET_CLOUD_API_KEY: ${{ secrets.DEEPSET_CLOUD_API_KEY }}
+          DEEPSET_CLOUD_WORKSPACE: ${{ secrets.DEEPSET_CLOUD_WORKSPACE }}
         run: npm run all
