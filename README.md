@@ -71,3 +71,9 @@ $ npm test
 
 ...
 ```
+
+If `DEEPSET_CLOUD_API_KEY` and `DEEPSET_CLOUD_WORKSPACE` env vars are set integrations tests will also be run.
+
+⚠️⚠️⚠️
+Integration test are destructive and delete all uploaded files after each tests. Run them only in a test workspace in which you can afford to lose files!
+⚠️⚠️⚠️
