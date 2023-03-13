@@ -52,7 +52,8 @@ function run() {
             const metadata = (0, validators_1.parseAndValidateMetadata)(core.getInput('meta'));
             const writeMode = core.getInput('write-mode');
             (0, validators_1.validateWriteMode)(writeMode);
-            yield (0, upload_1.upload)(apiKey, workspaceName, file, metadata, writeMode);
+            const file_id = yield (0, upload_1.uploadFile)(apiKey, workspaceName, file, metadata, writeMode);
+            core.info(`Uploaded file ID: ${file_id}`);
         }
         catch (error) {
             if (error instanceof Error) {
@@ -71,29 +72,6 @@ run();
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -107,24 +85,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.upload = void 0;
-const core = __importStar(__nccwpck_require__(42186));
+exports.deleteFile = exports.listFiles = exports.uploadFile = void 0;
 const api_1 = __importDefault(__nccwpck_require__(57179));
-const dC = (0, api_1.default)('@deepsetcloud/v1.0');
-function upload(apiKey, workspace, file, metadata, writeMode) {
+const dC = (0, api_1.default)('@deepsetcloud/v1.0#1q41vlf6pmzzv');
+function uploadFile(apiKey, workspace, file, metadata, writeMode) {
     return __awaiter(this, void 0, void 0, function* () {
         dC.auth(apiKey);
-        const data = yield dC.upload_file_api_v1_workspaces__workspace_name__files_post({
+        const res = yield dC.upload_file_api_v1_workspaces__workspace_name__files_post({
             file,
             meta: JSON.stringify(metadata)
         }, {
             write_mode: writeMode,
             workspace_name: workspace
         });
-        core.info(data);
+        return res['data']['file_id'];
     });
 }
-exports.upload = upload;
+exports.uploadFile = uploadFile;
+function listFiles(apiKey, workspace) {
+    return __awaiter(this, void 0, void 0, function* () {
+        dC.auth(apiKey);
+        const res = yield dC.list_files_api_v1_workspaces__workspace_name__files_get({
+            workspace_name: workspace
+        });
+        return res['data']['data'].map((d) => d['file_id']);
+    });
+}
+exports.listFiles = listFiles;
+function deleteFile(apiKey, workspace, fileID) {
+    return __awaiter(this, void 0, void 0, function* () {
+        dC.auth(apiKey);
+        yield dC.delete_file_api_v1_workspaces__workspace_name__files__file_id__delete({
+            workspace_name: workspace,
+            file_id: fileID
+        });
+    });
+}
+exports.deleteFile = deleteFile;
 
 
 /***/ }),
