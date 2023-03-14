@@ -3,7 +3,7 @@
 [![Test](https://github.com/silvanocerza/deepset-cloud-file-uploader/actions/workflows/test.yml/badge.svg)](https://github.com/silvanocerza/deepset-cloud-file-uploader/actions/workflows/test.yml)
 [![CodeQL](https://github.com/silvanocerza/deepset-cloud-file-uploader/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/silvanocerza/deepset-cloud-file-uploader/actions/workflows/codeql-analysis.yml)
 
-Use this GH Action to upload files and metadata to [deepset Cloud](cloud.deepset.ai).
+Use this GH Action to upload files and metadata to [deepset Cloud](https://docs.cloud.deepset.ai).
 
 ## Usage
 
