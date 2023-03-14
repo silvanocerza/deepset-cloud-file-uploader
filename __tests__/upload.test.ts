@@ -141,6 +141,14 @@ describe('Upload', () => {
 })
 
 describe('List', () => {
+  afterEach(async () => {
+    const fileIDs = await listFiles(dCApiKey!, dCWorkspace!)
+
+    for (const id of fileIDs) {
+      await deleteFile(dCApiKey!, dCWorkspace!, id)
+    }
+  })
+
   run_if(dc_env_vars_are_set()).test('Uploaded files are listed', async () => {
     const firstTestFile = path.join(
       os.tmpdir(),
