@@ -28,9 +28,22 @@ We might also want to specify some file metadata on upload, the field must be a 
     api-key: ${{ secrets.DEEPSET_CLOUD_API_KEY }}
     workspace-name: ${{ secrets.DEEPSET_CLOUD_WORKSPACE }}
     file: my-file.md
-    metadata: |
+    meta: |
       date: '2022-03-08'
       type: 'markdown'
+```
+
+Alternatively you can use the `meta-file` field, it must point to an existing YAML file.
+Can't be used in conjuction with `meta`.
+
+```
+- name: Upload file to deepset Cloud
+  uses: silvanocerza/deepset-cloud-file-uploader@v1
+  with:
+    api-key: ${{ secrets.DEEPSET_CLOUD_API_KEY }}
+    workspace-name: ${{ secrets.DEEPSET_CLOUD_WORKSPACE }}
+    file: my-file.md
+    meta-file: my-file-metadata.yml
 ```
 
 By default upload will fail if a file with the same name exists in the specified workspace. We can change that behaviour by setting the `write-mode` argument to either `OVERWRITE` to overwrite the already existing file, or `KEEP` to keep both files.

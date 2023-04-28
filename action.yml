@@ -15,6 +15,10 @@ inputs:
     required: false
     description: 'File metadata formatted as a YAML map of strings'
     default: ''
+  meta-file:
+    required: false
+    description: 'File containing metadata for the file uploaded, must be YAML'
+    default: ''
   write-mode:
     required: false
     description: 'How to handle file upload in case a file with the same name already exists. Possible options are: KEEP, OVERWRITE, FAIL. Defaults to FAIL.'

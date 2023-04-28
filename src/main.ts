@@ -5,6 +5,7 @@ import {
   validateWriteMode
 } from './validators'
 import {uploadFile} from './upload'
+import fs from 'fs'
 
 async function run(): Promise<void> {
   try {
@@ -13,7 +14,19 @@ async function run(): Promise<void> {
     const file = core.getInput('file')
     validateFile(file)
 
-    const metadata = parseAndValidateMetadata(core.getInput('meta'))
+    const meta = core.getInput('meta')
+    const metaFile = core.getInput('meta-file')
+
+    let metadata: Record<string, string> = {}
+    if (meta && metaFile) {
+      core.setFailed("Can't use both `meta` and `meta-file` inputs. Aborting.")
+    } else if (meta) {
+      metadata = parseAndValidateMetadata(meta)
+    } else if (metaFile) {
+      const data = fs.readFileSync(metaFile).toString()
+      metadata = parseAndValidateMetadata(data)
+    }
+
     const writeMode = core.getInput('write-mode')
     validateWriteMode(writeMode)
 

@@ -38,10 +38,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(42186));
 const validators_1 = __nccwpck_require__(98694);
 const upload_1 = __nccwpck_require__(64831);
+const fs_1 = __importDefault(__nccwpck_require__(57147));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -49,7 +53,19 @@ function run() {
             const apiKey = core.getInput('api-key');
             const file = core.getInput('file');
             (0, validators_1.validateFile)(file);
-            const metadata = (0, validators_1.parseAndValidateMetadata)(core.getInput('meta'));
+            const meta = core.getInput('meta');
+            const metaFile = core.getInput('meta-file');
+            let metadata = {};
+            if (meta && metaFile) {
+                core.setFailed("Can't use both `meta` and `meta-file` inputs. Aborting.");
+            }
+            else if (meta) {
+                metadata = (0, validators_1.parseAndValidateMetadata)(meta);
+            }
+            else if (metaFile) {
+                const data = fs_1.default.readFileSync(metaFile).toString();
+                metadata = (0, validators_1.parseAndValidateMetadata)(data);
+            }
             const writeMode = core.getInput('write-mode');
             (0, validators_1.validateWriteMode)(writeMode);
             const file_id = yield (0, upload_1.uploadFile)(apiKey, workspaceName, file, metadata, writeMode);
