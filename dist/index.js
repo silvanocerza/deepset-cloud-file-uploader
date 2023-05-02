@@ -156,9 +156,10 @@ const yaml_1 = __importDefault(__nccwpck_require__(44083));
 const fs_1 = __importDefault(__nccwpck_require__(57147));
 function parseAndValidateMetadata(meta) {
     const metadata = yaml_1.default.parse(meta) || {};
+    const validTypes = ['string', 'number', 'boolean'];
     for (const key in metadata) {
-        if (typeof metadata[key] !== 'string') {
-            throw new Error(`${key} metadata field is not a string, all values must be strings.`);
+        if (!validTypes.includes(typeof metadata[key])) {
+            throw new Error(`${key} metadata field is not a valid type, all values must be either string, number or boolean.`);
         }
     }
     return metadata;

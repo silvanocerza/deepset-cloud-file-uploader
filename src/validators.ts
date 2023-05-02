@@ -3,10 +3,11 @@ import fs from 'fs'
 
 export function parseAndValidateMetadata(meta: string): Record<string, string> {
   const metadata: Record<string, string> = YAML.parse(meta) || {}
+  const validTypes = ['string', 'number', 'boolean']
   for (const key in metadata) {
-    if (typeof metadata[key] !== 'string') {
+    if (!validTypes.includes(typeof metadata[key])) {
       throw new Error(
-        `${key} metadata field is not a string, all values must be strings.`
+        `${key} metadata field is not a valid type, all values must be either string, number or boolean.`
       )
     }
   }

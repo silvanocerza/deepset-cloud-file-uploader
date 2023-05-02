@@ -19,8 +19,9 @@ describe('Metadata validator', () => {
 
   test('metadata is parsed correctly', async () => {
     const input = `
-date: '2022-03-08'
-amount: '1'
+date: 2022-03-08
+amount: 1
+valid: true
 source: 'github.com'`
     const metadata = parseAndValidateMetadata(input)
     expect(metadata['date'] === '2022-03-08')
@@ -28,14 +29,19 @@ source: 'github.com'`
     expect(metadata['source'] === 'github.com')
   })
 
-  test('Error is thrown if metadata field is not a string', async () => {
+  test('Error is thrown if metadata field is not a scalar value', async () => {
     const input = `
-date: '2022-03-08'
+date: 2022-03-08
 amount: 1
+valid: true
+list:
+  - 1
+  - 2
+  - 3
 source: 'github.com'`
 
     expect(() => parseAndValidateMetadata(input)).toThrow(
-      'amount metadata field is not a string, all values must be strings.'
+      'list metadata field is not a valid type, all values must be either string, number or boolean.'
     )
   })
 })
