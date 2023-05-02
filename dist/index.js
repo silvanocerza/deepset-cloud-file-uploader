@@ -44,6 +44,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(42186));
 const validators_1 = __nccwpck_require__(98694);
+const metadata_1 = __nccwpck_require__(25708);
 const upload_1 = __nccwpck_require__(64831);
 const fs_1 = __importDefault(__nccwpck_require__(57147));
 function run() {
@@ -60,11 +61,11 @@ function run() {
                 core.setFailed("Can't use both `meta` and `meta-file` inputs. Aborting.");
             }
             else if (meta) {
-                metadata = (0, validators_1.parseAndValidateMetadata)(meta);
+                metadata = (0, metadata_1.parseMetadata)(meta);
             }
             else if (metaFile) {
                 const data = fs_1.default.readFileSync(metaFile).toString();
-                metadata = (0, validators_1.parseAndValidateMetadata)(data);
+                metadata = (0, metadata_1.parseMetadata)(data);
             }
             const writeMode = core.getInput('write-mode');
             (0, validators_1.validateWriteMode)(writeMode);
@@ -79,6 +80,25 @@ function run() {
     });
 }
 run();
+
+
+/***/ }),
+
+/***/ 25708:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseMetadata = void 0;
+const yaml_1 = __importDefault(__nccwpck_require__(44083));
+function parseMetadata(meta) {
+    return yaml_1.default.parse(meta) || {};
+}
+exports.parseMetadata = parseMetadata;
 
 
 /***/ }),
@@ -151,10 +171,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.validateWriteMode = exports.validateFile = exports.parseAndValidateMetadata = void 0;
+exports.validateWriteMode = exports.validateFile = exports.parseMetadata = void 0;
 const yaml_1 = __importDefault(__nccwpck_require__(44083));
 const fs_1 = __importDefault(__nccwpck_require__(57147));
-function parseAndValidateMetadata(meta) {
+function parseMetadata(meta) {
     const metadata = yaml_1.default.parse(meta) || {};
     const validTypes = ['string', 'number', 'boolean'];
     for (const key in metadata) {
@@ -164,7 +184,7 @@ function parseAndValidateMetadata(meta) {
     }
     return metadata;
 }
-exports.parseAndValidateMetadata = parseAndValidateMetadata;
+exports.parseMetadata = parseMetadata;
 function validateFile(file) {
     if (!fs_1.default.existsSync(file)) {
         throw new Error(`"${file}" doesn't exist`);

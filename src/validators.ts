@@ -1,7 +1,7 @@
 import YAML from 'yaml'
 import fs from 'fs'
 
-export function parseAndValidateMetadata(meta: string): Record<string, string> {
+export function parseMetadata(meta: string): Record<string, string> {
   const metadata: Record<string, string> = YAML.parse(meta) || {}
   const validTypes = ['string', 'number', 'boolean']
   for (const key in metadata) {

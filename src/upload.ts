@@ -1,4 +1,5 @@
 import api from 'api'
+import {Metadata} from './metadata'
 
 const dC = api('@deepsetcloud/v1.0#1q41vlf6pmzzv')
 
@@ -6,7 +7,7 @@ export async function uploadFile(
   apiKey: string,
   workspace: string,
   file: string,
-  metadata: {[key: string]: string},
+  metadata: Metadata,
   writeMode: string
 ): Promise<string> {
   dC.auth(apiKey)

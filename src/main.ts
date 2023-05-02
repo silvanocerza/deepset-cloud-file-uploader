@@ -1,9 +1,6 @@
 import * as core from '@actions/core'
-import {
-  parseAndValidateMetadata,
-  validateFile,
-  validateWriteMode
-} from './validators'
+import {validateFile, validateWriteMode} from './validators'
+import {parseMetadata, Metadata} from './metadata'
 import {uploadFile} from './upload'
 import fs from 'fs'
 
@@ -17,14 +14,14 @@ async function run(): Promise<void> {
     const meta = core.getInput('meta')
     const metaFile = core.getInput('meta-file')
 
-    let metadata: Record<string, string> = {}
+    let metadata: Metadata = {}
     if (meta && metaFile) {
       core.setFailed("Can't use both `meta` and `meta-file` inputs. Aborting.")
     } else if (meta) {
-      metadata = parseAndValidateMetadata(meta)
+      metadata = parseMetadata(meta)
     } else if (metaFile) {
       const data = fs.readFileSync(metaFile).toString()
-      metadata = parseAndValidateMetadata(data)
+      metadata = parseMetadata(data)
     }
 
     const writeMode = core.getInput('write-mode')
